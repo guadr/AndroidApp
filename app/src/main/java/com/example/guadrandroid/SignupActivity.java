@@ -1,6 +1,8 @@
 package com.example.guadrandroid;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -19,13 +21,18 @@ public class SignupActivity extends AppCompatActivity {
     EditText _nameText;
     EditText _emailText;
     EditText _passwordText;
-     Button _signupButton;
+    Button   _signupButton;
     TextView _loginLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        _nameText = (EditText) findViewById(R.id.input_name);
+        _emailText = (EditText) findViewById(R.id.input_email);
+        _passwordText = (EditText) findViewById(R.id.input_password);
+        _signupButton = (Button) findViewById(R.id.button_submit);
+        _loginLink = (TextView) findViewById(R.id.link_login);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own signup logic here.
+        // TODO: Implement signup logic here.
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -71,7 +78,7 @@ public class SignupActivity extends AppCompatActivity {
                         // On complete call either onSignupSuccess or onSignupFailed
                         // depending on success
                         onSignupSuccess();
-                        // onSignupFailed();
+                        onSignupFailed();
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -80,14 +87,25 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
-        setResult(RESULT_OK, null);
-        finish();
+        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+        setResult(RESULT_OK, intent);
+        SignupActivity.this.finish();
     }
 
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         _signupButton.setEnabled(true);
+    }
+
+    @Override
+    /**
+     * handling if user presses the android back button
+     */
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent();
+        setResult(Activity.RESULT_CANCELED,intent);
+        SignupActivity.this.finish();
     }
 
     public boolean validate() {

@@ -18,6 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
+    EditText _nameText;
     EditText _emailText;
     EditText _passwordText;
     Button _loginButton;
@@ -43,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
@@ -74,9 +74,8 @@ public class LoginActivity extends AppCompatActivity {
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
                         progressDialog.dismiss();
+                        onLoginSuccess();
                     }
                 }, 3000);
     }
@@ -102,7 +101,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        finish();
+        Intent intent = new Intent(LoginActivity.this,StoreOverview.class);
+        startActivity(intent);
     }
 
     public void onLoginFailed() {
