@@ -50,6 +50,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * this function calls the validation with entered information and gives a progress dialog
+     * that the app is validating the login, stores the entered information
+     */
     public void login() {
         Log.d(TAG, "Login");
 
@@ -68,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
-
+        //TODO validate that this info is in the database
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -94,23 +99,36 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
+    /**
+     * handles if the user presses the back button
+     */
     public void onBackPressed() {
         // disable going back to the MainActivity
         moveTaskToBack(true);
     }
 
+    /**
+     * starts activity with correct login
+     */
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         Intent intent = new Intent(LoginActivity.this,StoreOverview.class);
         startActivity(intent);
     }
 
+    /**
+     * Tells the user that login failed
+     */
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
         _loginButton.setEnabled(true);
     }
 
+    /**
+     * this function validates the entered text fields to see if the user used correct input
+     * @return true if correct entry data false if not
+     */
     public boolean validate() {
         boolean valid = true;
 

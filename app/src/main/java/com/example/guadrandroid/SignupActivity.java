@@ -45,11 +45,16 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Finish the registration screen and return to the Login activity
+                // TODO change this to correctly return to the login screen right now closes app
                 finish();
             }
         });
     }
 
+    /**
+     * This function calls the validation and contains a message to inform the user that signup is
+     * in progress with a progress bar
+     */
     public void signup() {
         Log.d(TAG, "Signup");
 
@@ -85,6 +90,9 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Finishes the signup activity and returns to login page
+     */
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
         Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
@@ -92,6 +100,9 @@ public class SignupActivity extends AppCompatActivity {
         SignupActivity.this.finish();
     }
 
+    /**
+     * Tells the user that signup failed
+     */
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
@@ -108,6 +119,10 @@ public class SignupActivity extends AppCompatActivity {
         SignupActivity.this.finish();
     }
 
+    /**
+     * this function validates the entered text fields to see if the user used correct input
+     * @return true if correct entry data false if not
+     */
     public boolean validate() {
         boolean valid = true;
 

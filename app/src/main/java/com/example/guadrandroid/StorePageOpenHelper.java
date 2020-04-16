@@ -58,7 +58,7 @@ public class StorePageOpenHelper extends SQLiteOpenHelper {
      * Contains a select statement returning all notes stored in the database
      * @return a cursor referencing all notes
      */
-    public Cursor getSelectAllNotesCursor() {
+    public Cursor getSelectAllSellersCursor() {
         // SELECT * FROM tableContacts
         String sqlSelect = "SELECT * FROM " + TABLE_SELLERS;
         // get a reference to a database for reading
@@ -91,8 +91,8 @@ public class StorePageOpenHelper extends SQLiteOpenHelper {
 
     /**
      * contains the sql for the note to be updated in the database
-     * @param id the id of the note to be updated
-     * @param newSeller the new contents of the note
+     * @param id the id of the seller to be updated
+     * @param newSeller the new contents of the seller
      */
     public void updateSellerById(int id, Seller newSeller) {
         // UPDATE tableContacts SET name='SPIKE', phoneNumber='208-208-2082' WHERE _id=1
@@ -108,7 +108,7 @@ public class StorePageOpenHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * A function to delete all notes in the database
+     * A function to delete all sellers in the database
      */
     public void deleteAllSellers() {
         // DELETE FROM tableSellers

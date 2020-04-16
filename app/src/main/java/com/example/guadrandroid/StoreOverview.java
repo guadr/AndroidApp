@@ -24,7 +24,7 @@ public class StoreOverview extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_overview);
-        GridLayout gridLayout = new GridLayout(this);//layout for main activity
+        GridLayout gridLayout = new GridLayout(this);//layout for store overview
         setContentView(gridLayout);
         gridLayout.setColumnCount(1);
         final ListView listView = createListView(gridLayout);
@@ -32,14 +32,14 @@ public class StoreOverview extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openHelper = new StorePageOpenHelper(StoreOverview.this);
-                cursor=openHelper.getSelectAllNotesCursor();
-                cursor.moveToPosition(position);
+                cursor=openHelper.getSelectAllSellersCursor();//getting the cursor to select all stored sellers
+                cursor.moveToPosition(position);//moving cursor to selected item
                 String sellerName = cursor.getString(cursor.getColumnIndex("sellerName"));
                 String sellerDescription = cursor.getString(cursor.getColumnIndex("sellerDescription"));
 
                 list_position = position;
                 Intent intent = new Intent(StoreOverview.this,SellerPage.class);
-                intent.putExtra("sellerName", sellerName);//passing the already created content
+                intent.putExtra("sellerName", sellerName);//passing the already created seller selected
                 intent.putExtra("sellerDescription", sellerDescription);
                 intent.putExtra("noteCreated",false);
                 intent.putExtra("position", list_position);
@@ -48,6 +48,11 @@ public class StoreOverview extends AppCompatActivity {
         });
     }
 
+    /**
+     * This function is used to create the specs for the list view layout
+     * @param gridLayout
+     * @return the created list view with the correct parameters
+     */
     private ListView createListView(GridLayout gridLayout) {
         GridLayout.LayoutParams listParams = new GridLayout.LayoutParams();
         listParams.width = 0;

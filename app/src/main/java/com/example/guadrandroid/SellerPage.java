@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 public class SellerPage extends AppCompatActivity {
-    boolean isNewSeller;//boolean to see whether the note is a new or already created note
+    boolean isNewSeller;//boolean to see whether the seller is already created
     int sellerPosition;//the position of the seller in the list
 
     @Override
@@ -59,7 +59,7 @@ public class SellerPage extends AppCompatActivity {
 
     /**
      * This function sets the layout parameters for the create button and adds it to the view
-     * @param gridLayout the layout of note activity
+     * @param gridLayout the layout of sellerPage activity
      * @return the set up create button
      */
     private Button createButton(GridLayout gridLayout){
