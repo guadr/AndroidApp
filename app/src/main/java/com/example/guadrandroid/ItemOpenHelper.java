@@ -15,6 +15,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+/**
+ * this class is used to access the item database
+ */
 public class ItemOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLiteFunTag";
 
@@ -36,11 +39,7 @@ public class ItemOpenHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        // this is where we create our database tables
-        // this method is only called once... called after
-        // first call to getWriteableDatabase()
-        // we construct Strings to represent SQL (structured query language)
-        // commands/statements
+        //creating the table for items
 
         String sqlCreate = "CREATE TABLE " + TABLE_ITEMS + "(" +
                 ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -55,12 +54,11 @@ public class ItemOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        //TODO implement upgrade logic for database changes
     }
 
     /**
      * Contains a select statement returning all items stored in the database
-     * for the current seller
      * @return a cursor referencing all items
      */
     public Cursor getSelectAllItemsCursor(String currentSeller) {
@@ -75,7 +73,13 @@ public class ItemOpenHelper extends SQLiteOpenHelper {
         // don't close the database!! the cursor needs it open
         return cursor;
     }
-public Cursor getItemsFromSellerCursor (String currentSeller){
+
+    /**
+     * a select statement getting only items for the current seller
+     * @param currentSeller the name of the current celler
+     * @return a cursor referencing the items from the current seller
+     */
+    public Cursor getItemsFromSellerCursor (String currentSeller){
     String sqlSelect = "SELECT * FROM " + TABLE_ITEMS
             + " WHERE " + ITEM_SELLER + "=" + "'" + currentSeller + "'";
 
@@ -89,7 +93,7 @@ public Cursor getItemsFromSellerCursor (String currentSeller){
     return cursor;
 }
     /**
-     * Contains the sql to insert a note into the database
+     * Contains the sql to insert a item into the database
      * @param item the new item to be inserted
      */
     public void insertItem(Item item) {
@@ -109,8 +113,8 @@ public Cursor getItemsFromSellerCursor (String currentSeller){
 
     /**
      * contains the sql for the note to be updated in the database
-     * @param id the id of the seller to be updated
-     * @param newItem the new contents of the seller
+     * @param id the id of the item to be updated
+     * @param newItem the new contents of the item
      */
     public void updateItemById(int id, Item newItem) {
         // UPDATE tableContacts SET name='SPIKE', phoneNumber='208-208-2082' WHERE _id=1

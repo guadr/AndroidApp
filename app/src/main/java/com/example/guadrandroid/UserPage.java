@@ -26,7 +26,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 
-
+/**
+ * this class shows the list of sellers shown to the user
+ */
 public class UserPage extends AppCompatActivity {
     static final String TAG = "SQLiteFunTag";
     int list_position;

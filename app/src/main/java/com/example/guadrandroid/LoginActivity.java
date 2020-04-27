@@ -129,17 +129,17 @@ public class LoginActivity extends AppCompatActivity {
                         String password = _passwordText.getText().toString();
                         if(isUser){
                             _openUserHelper = new openUserHelper(getApplicationContext());
-                            loginStatus = _openUserHelper.validateUser(password,email);
-                            if (loginStatus == true){
+                            loginStatus = _openUserHelper.validateUser(password,email);//calling validation
+                            if (loginStatus){//login status validated successfully
                                 Toast.makeText(getBaseContext(), "User Login succeeded", Toast.LENGTH_LONG).show();
                                 onUserLoginSuccess();
                             }
-                            else{
+                            else{//entered content not validated
                                 Toast.makeText(getBaseContext(), "User Login failed", Toast.LENGTH_LONG).show();
                                 onLoginFailed();
                             }
                         }
-                        else{
+                        else{//calling functions if user is a vendor
                             _openSellerHelper = new openSellerHelper(getApplicationContext());
                             loginStatus = _openSellerHelper.validateSeller(password,email);
                             if (loginStatus == true){
@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        _emailText.setText("");
+        _emailText.setText("");//clearing the texts
         _passwordText.setText("");
         _sellerName.setText("");
         _loginButton.setText("");

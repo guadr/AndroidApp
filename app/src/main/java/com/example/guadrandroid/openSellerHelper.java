@@ -37,12 +37,7 @@ public class openSellerHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        // this is where we create our database tables
-        // this method is only called once... called after
-        // first call to getWriteableDatabase()
-        // we construct Strings to represent SQL (structured query language)
-        // commands/statements
-
+    //creating the table for seller tables
         String sqlCreate = "CREATE TABLE " + TABLE_SELLERS + "(" +
                 SELLER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 SELLER_NAME + " TEXT, " +
@@ -59,8 +54,8 @@ public class openSellerHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Contains a select statement returning all notes stored in the database
-     * @return a cursor referencing all notes
+     * Contains a select statement returning all sellers stored in the database
+     * @return a cursor referencing all sellers
      */
     public Cursor getSelectAllSellersCursor() {
         // SELECT * FROM tableContacts
@@ -93,6 +88,12 @@ public class openSellerHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * validating the entered email and password for the current seller login
+     * @param enteredPassword the user entered email
+     * @param email the user entered password
+     * @return true if valid false if not
+     */
     public Boolean validateSeller(String enteredPassword, String email){
         String sqlSelect = "SELECT * FROM " + TABLE_SELLERS
                 + " WHERE " + SELLER_EMAIL + "=" + "'" + email + "'";

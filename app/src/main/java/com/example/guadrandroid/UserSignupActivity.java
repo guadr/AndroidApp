@@ -75,7 +75,7 @@ public class UserSignupActivity extends AppCompatActivity {
         Log.d(TAG, "Signup");
 
         if (!validate()) {
-            onSignupFailed();
+            onSignupFailed();//validation failed
             return;
         }
 
@@ -85,24 +85,19 @@ public class UserSignupActivity extends AppCompatActivity {
                 R.style.Theme_AppCompat_DayNight_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
-
-
-
+        progressDialog.show();//informing user that progress is happening
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
+                        //info entered from text boxes
                         String name = _nameText.getText().toString();
                         String email = _emailText.getText().toString();
                         String password = _passwordText.getText().toString();
 
                         User currentUser = new User(email,password,name);
                         _openUserHelper = new openUserHelper(getApplicationContext());
-                        _openUserHelper.insertUser(currentUser);// inserting current note into database
-
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
+                        _openUserHelper.insertUser(currentUser);// inserting current user into the database
                         onSignupSuccess();
                         progressDialog.dismiss();
                     }

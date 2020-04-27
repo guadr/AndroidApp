@@ -37,11 +37,7 @@ public class openUserHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        // this is where we create our database tables
-        // this method is only called once... called after
-        // first call to getWriteableDatabase()
-        // we construct Strings to represent SQL (structured query language)
-        // commands/statements
+        //creating the table for users in the database
 
         String sqlCreate = "CREATE TABLE " + TABLE_USERS + "(" +
                 USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -92,7 +88,7 @@ public class openUserHelper extends SQLiteOpenHelper {
     }
 
     /**
-     *
+     *validating user credentials
      * @param enteredPassword the password the user entered
      * @param enteredEmail the email the user entered
      * @return true if matching in database false if not

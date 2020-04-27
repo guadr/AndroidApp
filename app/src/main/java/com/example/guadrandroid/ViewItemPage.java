@@ -18,20 +18,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 
+/**
+ * activity allowing the user to view details about an item
+ */
 public class ViewItemPage extends AppCompatActivity {
-    boolean isNewItem;//boolean to see whether the note is a new or already created note
+    boolean isNewItem;//boolean to see whether the item is a new or already created item
     int itemPosition;//the position of the note in the list
 
 
@@ -82,7 +78,7 @@ public class ViewItemPage extends AppCompatActivity {
 
     /**
      * This function sets the layout parameters for the edit text and adds it to the view
-     * @param gridLayout the layout of note activity
+     * @param gridLayout the layout of ViewItemPage activity
      * @return the set up edit text for the title
      */
     private TextView createTextView(GridLayout gridLayout){
@@ -100,7 +96,7 @@ public class ViewItemPage extends AppCompatActivity {
 
     /**
      * This function sets the layout parameters for the edit text and adds it to the view
-     * @param gridLayout the layout of itemPage activity
+     * @param gridLayout the layout of ViewitemPage activity
      * @return the set up edit text for content
      */
     private TextView createTextView2(GridLayout gridLayout){
@@ -118,7 +114,7 @@ public class ViewItemPage extends AppCompatActivity {
     }
     /**
      * This function sets the layout parameters for the edit text and adds it to the view
-     * @param gridLayout the layout of itemPage activity
+     * @param gridLayout the layout of ViewItemPage activity
      * @return the set up edit text for price
      */
     private TextView createTextView3(GridLayout gridLayout){
@@ -138,7 +134,7 @@ public class ViewItemPage extends AppCompatActivity {
 
     /**
      * This function sets the layout parameters for the create button and adds it to the view
-     * @param gridLayout the layout of note activity
+     * @param gridLayout the layout of ViewItemPage activity
      * @return the set up create button
      */
     private Button createButton(GridLayout gridLayout){

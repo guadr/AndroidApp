@@ -24,6 +24,9 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * this activity allows vendors to sign up
+ */
 public class VendorSignupActivity extends AppCompatActivity {
 
     private static final String TAG = "SignupActivity";
@@ -52,19 +55,17 @@ public class VendorSignupActivity extends AppCompatActivity {
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//goes to user signup
                 signup();
             }
         });
 
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//goes to login page
                 finish();
             }
         });
-
-
 
     }
 
@@ -100,9 +101,7 @@ public class VendorSignupActivity extends AppCompatActivity {
                         Seller currentSeller = new Seller(sellerEmail,sellerPassword,sellerName,sellerDescription);
 
                         _openSellerHelper = new openSellerHelper(getApplicationContext());
-                        _openSellerHelper.insertSeller(currentSeller);// inserting current note into database
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
+                        _openSellerHelper.insertSeller(currentSeller);// inserting current seller into database
                         onSignupSuccess();
                         //onSignupFailed();
                         progressDialog.dismiss();
@@ -142,7 +141,6 @@ public class VendorSignupActivity extends AppCompatActivity {
 
     /**
      * this function validates the entered text fields to see if the user used correct input
-     *
      * @return true if correct entry data false if not
      */
     public boolean validate() {

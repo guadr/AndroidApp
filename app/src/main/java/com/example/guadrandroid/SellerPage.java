@@ -30,15 +30,12 @@ import android.widget.AdapterView;
 import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
-
-import com.example.guadrandroid.ItemOpenHelper;
 
 
 public class SellerPage extends AppCompatActivity {
     static final String TAG = "SQLiteFunTag";
-    int list_position;
-    SimpleCursorAdapter cursorAdapter;
+    int list_position;//posisiton in the listview
+    SimpleCursorAdapter cursorAdapter;//adapter for list
     Cursor cursor;
     ItemOpenHelper openHelper;
     String itemSeller;
@@ -47,12 +44,12 @@ public class SellerPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GridLayout gridLayout = new GridLayout(this);//layout for main activity
+        GridLayout gridLayout = new GridLayout(this);//layout for seller page activity
         setContentView(gridLayout);
         gridLayout.setColumnCount(1);
         Intent intent = getIntent();
         if(intent != null) {
-            itemSeller = intent.getStringExtra("sellerName");
+            itemSeller = intent.getStringExtra("sellerName");//getting name from login
         }
         final ListView listView = createListView(gridLayout);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {//listener for the item list
@@ -60,13 +57,12 @@ public class SellerPage extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openHelper = new ItemOpenHelper(SellerPage.this);
                 cursor=openHelper.getSelectAllItemsCursor(itemSeller);
-                cursor.moveToPosition(position);
+                cursor.moveToPosition(position);//moving cursor to clicked position
+                //getting data from user clicked on item
                 String itemName = cursor.getString(cursor.getColumnIndex("itemName"));
                 String itemPrice = cursor.getString(cursor.getColumnIndex("itemPrice"));
                 String itemDescription = cursor.getString(cursor.getColumnIndex("itemDescription"));
-
                 list_position = position;
-
                 Intent intent = new Intent(SellerPage.this, ItemPage.class);
                 intent.putExtra("itemName", itemName);//passing the already created content
                 intent.putExtra("itemSeller", itemSeller);
@@ -84,12 +80,12 @@ public class SellerPage extends AppCompatActivity {
             @Override
             public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
                 int numChecked = listView.getCheckedItemCount();//getting number of items selected
-                actionMode.setTitle(numChecked + " selected");
+                actionMode.setTitle(numChecked + " selected");//showing selected items
             }
 
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-                MenuInflater menuInflater = getMenuInflater();
+                MenuInflater menuInflater = getMenuInflater();//inflating cam menu to screen
                 menuInflater.inflate(R.menu.cam_menu, menu);
                 return true;
             }
@@ -113,7 +109,7 @@ public class SellerPage extends AppCompatActivity {
                     }
                     Log.d(TAG, "delete cam items");
                     cursor = openHelper.getSelectAllItemsCursor(itemSeller);
-                    cursorAdapter.changeCursor(cursor);
+                    cursorAdapter.changeCursor(cursor);//deleting selected items
                     actionMode.finish();
                     return true;
                 }
@@ -183,7 +179,7 @@ public class SellerPage extends AppCompatActivity {
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                                dialog.dismiss();//user said no
                             }
                         });
                 alertBuilder.show();
@@ -194,7 +190,7 @@ public class SellerPage extends AppCompatActivity {
     @Override
     /**
      * handles the return from note Activity and places item in list view based
-     * on whether a new note is being added or a note is being updated
+     * on whether a new item is being added or an item is being updated
      */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);//the data returned by note activity
@@ -231,7 +227,7 @@ public class SellerPage extends AppCompatActivity {
 
     /**
      * This function sets the layout parameters for the listview and adds it to the view
-     * @param gridLayout the layout of main activity
+     * @param gridLayout the layout of SellerPage activity
      * @return the set up list View
      */
     private ListView createListView(GridLayout gridLayout) {

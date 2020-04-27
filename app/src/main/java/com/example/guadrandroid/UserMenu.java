@@ -20,7 +20,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-
+/**
+ * this class represents the menu of items for a seller shown to the user
+ */
 public class UserMenu extends AppCompatActivity {
     static final String TAG = "SQLiteFunTag";
     int list_position;
@@ -38,9 +40,8 @@ public class UserMenu extends AppCompatActivity {
         final ListView listView = createListView(gridLayout);
         Intent intent = getIntent();
 
-        if(intent != null) {
+        if(intent != null) {//getting seller name
             itemSeller = intent.getStringExtra("sellerName");
-            Toast.makeText(this,itemSeller,Toast.LENGTH_LONG).show();
         }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {//listener for the item list
             @Override
@@ -53,13 +54,14 @@ public class UserMenu extends AppCompatActivity {
                 String itemPrice = cursor.getString(cursor.getColumnIndex("itemPrice"));
                 list_position = position;
                 Intent intent = new Intent(UserMenu.this, ViewItemPage.class);
-                intent.putExtra("itemName",itemName);
+                intent.putExtra("itemName",itemName);//sending already entered item description
                 intent.putExtra("itemDescription",itemDescription);
                 intent.putExtra("itemPrice",itemPrice);
                 startActivityForResult(intent, 0);//starting item activity
             }
         });
 
+        //setting up cursor adapter for list view
         ItemOpenHelper openHelper = new ItemOpenHelper(this);
         cursorAdapter = new SimpleCursorAdapter(
                 this,
@@ -77,7 +79,7 @@ public class UserMenu extends AppCompatActivity {
 
     /**
      * This function sets the layout parameters for the listview and adds it to the view
-     * @param gridLayout the layout of main activity
+     * @param gridLayout the layout of userMenu
      * @return the set up list View
      */
     private ListView createListView(GridLayout gridLayout) {

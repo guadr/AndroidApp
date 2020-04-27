@@ -16,18 +16,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
-
+/**
+ * this activity represents the page the seller sees when clicking on an item
+ */
 public class ItemPage extends AppCompatActivity {
     boolean isNewItem;//boolean to see whether the note is a new or already created note
     int itemPosition;//the position of the note in the list
@@ -37,7 +33,7 @@ public class ItemPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GridLayout gridLayout = new GridLayout(this);
+        GridLayout gridLayout = new GridLayout(this);//setting up the grid layout
         setContentView(gridLayout);
         gridLayout.setColumnCount(2);
         setContentView(gridLayout);
@@ -54,7 +50,7 @@ public class ItemPage extends AppCompatActivity {
                 String itemName = intent.getStringExtra("itemName");
                 String itemPrice = intent.getStringExtra("itemPrice");
                 String itemDescription = intent.getStringExtra("itemDescription");
-                editText.setText(itemName);
+                editText.setText(itemName);//setting the previously existing values for items
                 editText2.setText(itemDescription);
                 editText3.setText(itemPrice);
             }
@@ -104,7 +100,7 @@ public class ItemPage extends AppCompatActivity {
 
     /**
      * This function sets the layout parameters for the edit text and adds it to the view
-     * @param gridLayout the layout of note activity
+     * @param gridLayout the layout of itempage activity
      * @return the set up edit text for the title
      */
     private EditText createEditText(GridLayout gridLayout){
