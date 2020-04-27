@@ -1,7 +1,15 @@
+/**
+ * This program is a proof of concept app for
+ * an android version of the GUADR web application.
+ *
+ * Anyone is free to take and expand upon this code with credit
+ * @author Jackson Paris
+ * @version v1.0 4/26/20
+ */
+
 package com.example.guadrandroid;
-
-
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -9,6 +17,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,11 +27,17 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    EditText _nameText;
     EditText _emailText;
     EditText _passwordText;
+    EditText _sellerName;
     Button _loginButton;
-    TextView _signupLink;
+    TextView _userSignupLink;
+    TextView _vendorSignupLink;
+    Boolean isUser = true;
+    openSellerHelper _openSellerHelper;
+    openUserHelper _openUserHelper;
+    Boolean loginStatus;
+    Boolean hasSelectedStatus = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,8 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         _emailText = (EditText) findViewById(R.id.input_email);
         _passwordText = (EditText) findViewById(R.id.input_password);
+        _sellerName = (EditText) findViewById(R.id.input_seller_name) ;
         _loginButton = (Button) findViewById(R.id.btn_login);
-        _signupLink = (TextView) findViewById(R.id.link_signup);
+        _userSignupLink = (TextView) findViewById(R.id.link_user_signup);
+        _vendorSignupLink = (TextView) findViewById(R.id.link_seller_signup);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -40,16 +57,47 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-        _signupLink.setOnClickListener(new View.OnClickListener() {
+        _userSignupLink.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UserSignupActivity.class);
+                startActivityForResult(intent, REQUEST_SIGNUP);
+            }
+        });
+        _vendorSignupLink.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), VendorSignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
     }
 
+
+    /**
+     * Handler for the user selecting the normal user or vendor radio buttons
+     * @param view the radio button
+     */
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_user:
+                if (checked)
+                    isUser = true;
+                    hasSelectedStatus = true;
+                    break;
+            case R.id.radio_vendor:
+                if (checked)
+                    hasSelectedStatus = true;
+                    isUser = false;
+                    break;
+        }
+    }
 
     /**
      * this function calls the validation with entered information and gives a progress dialog
@@ -71,16 +119,37 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        //TODO validate that this info is in the database
+
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
+                        String email = _emailText.getText().toString();
+                        String password = _passwordText.getText().toString();
+                        if(isUser){
+                            _openUserHelper = new openUserHelper(getApplicationContext());
+                            loginStatus = _openUserHelper.validateUser(password,email);
+                            if (loginStatus == true){
+                                Toast.makeText(getBaseContext(), "User Login succeeded", Toast.LENGTH_LONG).show();
+                                onUserLoginSuccess();
+                            }
+                            else{
+                                Toast.makeText(getBaseContext(), "User Login failed", Toast.LENGTH_LONG).show();
+                                onLoginFailed();
+                            }
+                        }
+                        else{
+                            _openSellerHelper = new openSellerHelper(getApplicationContext());
+                            loginStatus = _openSellerHelper.validateSeller(password,email);
+                            if (loginStatus == true){
+                                onSellerLoginSuccess();
+                            }
+                            else{
+                                onLoginFailed();
+                            }
+                        }
                         progressDialog.dismiss();
-                        onLoginSuccess();
                     }
                 }, 3000);
     }
@@ -88,14 +157,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement signup logic here
-                // By default just finish the Activity and log them in automatically
-                this.finish();
-            }
-        }
+        _emailText.setText("");
+        _passwordText.setText("");
+        _sellerName.setText("");
+        _loginButton.setText("");
     }
 
     @Override
@@ -108,11 +173,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * starts activity with correct login
+     * starts user activity with correct login
      */
-    public void onLoginSuccess() {
+    public void onUserLoginSuccess() {
         _loginButton.setEnabled(true);
-        Intent intent = new Intent(LoginActivity.this,StoreOverview.class);
+        Intent intent = new Intent(LoginActivity.this,UserPage.class);
+        startActivity(intent);
+    }
+
+    /**
+     * starts seller activity with correct login
+     */
+    public void onSellerLoginSuccess() {
+        _loginButton.setEnabled(true);
+        Intent intent = new Intent(LoginActivity.this,SellerPage.class);
+        intent.putExtra("sellerName",_sellerName.getText().toString());
         startActivity(intent);
     }
 
@@ -121,7 +196,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         _loginButton.setEnabled(true);
     }
 
@@ -134,6 +208,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        String sellerName = _sellerName.getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
@@ -141,9 +216,19 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             _emailText.setError(null);
         }
+        if (hasSelectedStatus == false){
+            Toast.makeText(getBaseContext(), "Please select user or vendor", Toast.LENGTH_LONG).show();
+        }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if(!isUser && sellerName.isEmpty()){
+            _passwordText.setError("enter a seller name please");
+        }
+        else {
+            _passwordText.setError(null);
+        }
+
+        if (password.isEmpty() || password.length() < 4) {
+            _passwordText.setError("please enter a password greater than 4 alphanumeric characters");
             valid = false;
         } else {
             _passwordText.setError(null);
